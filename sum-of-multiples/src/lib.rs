@@ -4,9 +4,5 @@ pub fn sum_of_multiples(limit: u32, factors: &[u32]) -> u32 {
 }
 
 fn is_multiple(dividend: &u32, divisors: &[&u32]) -> bool {
-  divisors
-    .iter()
-    .filter(|&&x| dividend % x == 0)
-    .next()
-    .is_some()
+  divisors.iter().any(|&&x| dividend % x == 0)
 }
