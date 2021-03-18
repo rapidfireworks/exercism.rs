@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 
 use unicode_segmentation::{self, UnicodeSegmentation};
 
@@ -6,18 +6,19 @@ pub fn anagrams_for<'a>(word: &str, possible_anagrams: &[&'a str]) -> HashSet<&'
   let word = word.to_lowercase();
   possible_anagrams
     .iter()
-    .filter(|&&possible| anagram(&word, &possible.to_lowercase()))
+    .filter(|&&possible| is_anagram(&word, &possible.to_lowercase()))
     .map(|&x| x)
     .collect()
 }
 
-fn anagram(lhs: &str, rhs: &str) -> bool {
-  lhs != rhs && frequencies(lhs) == frequencies(rhs)
-}
-
-fn frequencies(word: &str) -> HashMap<&str, i64> {
-  word.graphemes(true).fold(HashMap::new(), |mut acc, val| {
-    *acc.entry(val).or_insert(0) += 1;
-    acc
-  })
+fn is_anagram(lhs: &str, rhs: &str) -> bool {
+  if lhs.len() == rhs.len() && lhs != rhs {
+    let mut lhs_letters: Vec<_> = lhs.graphemes(true).collect();
+    lhs_letters.sort();
+    let mut rhs_letters: Vec<_> = rhs.graphemes(true).collect();
+    rhs_letters.sort();
+    lhs_letters == rhs_letters
+  } else {
+    false
+  }
 }
