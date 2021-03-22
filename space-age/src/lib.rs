@@ -6,16 +6,24 @@ pub struct Duration {
   years: f64,
 }
 
+impl Duration {
+  const SECONDS_PER_YEAR: f64 = 31_557_600.0;
+}
+
 impl From<u64> for Duration {
   fn from(s: u64) -> Self {
     Duration {
-      years: s as f64 / 31_557_600.0,
+      years: s as f64 / Self::SECONDS_PER_YEAR,
     }
   }
 }
 
 pub trait Planet {
-  fn years_during(d: &Duration) -> f64;
+  const ORBITAL_PERIOD: f64;
+
+  fn years_during(d: &Duration) -> f64 {
+    d.years / Self::ORBITAL_PERIOD
+  }
 }
 
 pub struct Mercury;
@@ -28,42 +36,26 @@ pub struct Uranus;
 pub struct Neptune;
 
 impl Planet for Mercury {
-  fn years_during(d: &Duration) -> f64 {
-    d.years / 0.240_846_7
-  }
+  const ORBITAL_PERIOD: f64 = 0.240_846_7;
 }
 impl Planet for Venus {
-  fn years_during(d: &Duration) -> f64 {
-    d.years / 0.615_197_26
-  }
+  const ORBITAL_PERIOD: f64 = 0.615_197_26;
 }
 impl Planet for Earth {
-  fn years_during(d: &Duration) -> f64 {
-    d.years
-  }
+  const ORBITAL_PERIOD: f64 = 1.0;
 }
 impl Planet for Mars {
-  fn years_during(d: &Duration) -> f64 {
-    d.years / 1.880_815_8
-  }
+  const ORBITAL_PERIOD: f64 = 1.880_815_8;
 }
 impl Planet for Jupiter {
-  fn years_during(d: &Duration) -> f64 {
-    d.years / 11.862_615
-  }
+  const ORBITAL_PERIOD: f64 = 11.862_615;
 }
 impl Planet for Saturn {
-  fn years_during(d: &Duration) -> f64 {
-    d.years / 29.447_498
-  }
+  const ORBITAL_PERIOD: f64 = 29.447_498;
 }
 impl Planet for Uranus {
-  fn years_during(d: &Duration) -> f64 {
-    d.years / 84.016_846
-  }
+  const ORBITAL_PERIOD: f64 = 84.016_846;
 }
 impl Planet for Neptune {
-  fn years_during(d: &Duration) -> f64 {
-    d.years / 164.791_32
-  }
+  const ORBITAL_PERIOD: f64 = 164.791_32;
 }
