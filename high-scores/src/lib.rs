@@ -6,7 +6,7 @@ pub struct HighScores {
 impl HighScores {
   pub fn new(scores: &[u32]) -> Self {
     HighScores {
-      scores: scores.iter().map(|&x| x).collect(),
+      scores: scores.iter().cloned().collect(),
     }
   }
 
@@ -15,16 +15,16 @@ impl HighScores {
   }
 
   pub fn latest(&self) -> Option<u32> {
-    self.scores.last().map(|&x| x)
+    self.scores.last().cloned()
   }
 
   pub fn personal_best(&self) -> Option<u32> {
-    self.scores.iter().max().map(|&x| x)
+    self.scores.iter().max().cloned()
   }
 
   pub fn personal_top_three(&self) -> Vec<u32> {
-    let mut result: Vec<_> = self.scores.iter().map(|&x| x).collect();
-    result.sort_by(|lhs, rhs| rhs.cmp(lhs));
-    result.iter().take(3).map(|&x| x).collect()
+    let mut result: Vec<_> = self.scores.iter().cloned().collect();
+    result.sort_unstable_by(|lhs, rhs| rhs.cmp(lhs));
+    result.iter().take(3).cloned().collect()
   }
 }
