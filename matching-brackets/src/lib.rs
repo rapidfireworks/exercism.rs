@@ -3,12 +3,23 @@ pub fn brackets_are_balanced(string: &str) -> bool {
   for bracket in string.chars() {
     match bracket {
       '(' | '{' | '[' => stack.push(bracket),
-      ')' | '}' | ']' => match (stack.pop(), bracket) {
-        (Some('('), ')') | (Some('{'), '}') | (Some('['), ']') => continue,
-        _ => return false,
-      },
-      _ => continue,
+      ')' | '}' | ']' => {
+        let popped = stack.pop();
+        if popped.is_none() || popped != opening_pair(bracket) {
+          return false;
+        }
+      }
+      _ => (),
     }
   }
   stack.is_empty()
+}
+
+fn opening_pair(bracket: char) -> Option<char> {
+  match bracket {
+    ')' => Some('('),
+    '}' => Some('{'),
+    ']' => Some('['),
+    _ => None,
+  }
 }
